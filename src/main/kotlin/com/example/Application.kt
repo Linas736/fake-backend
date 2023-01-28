@@ -1,7 +1,6 @@
 package com.example
 
 import com.apurebase.kgraphql.GraphQL
-import com.example.plugins.configureSerialization
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -12,7 +11,6 @@ fun main() {
 }
 
 fun Application.module() {
-    configureSerialization()
     install(GraphQL) {
         playground = true
         schema {
