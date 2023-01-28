@@ -1,5 +1,6 @@
 package com.example
 
+import com.apurebase.kgraphql.GraphQL
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -11,5 +12,13 @@ fun main() {
 }
 
 fun Application.module() {
-    configureRouting()
+    install(GraphQL) {
+        configureRouting()
+        playground = true
+        schema {
+            query("hello") {
+                resolver { -> "World" }
+            }
+        }
+    }
 }
