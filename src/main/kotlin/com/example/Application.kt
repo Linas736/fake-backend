@@ -1,6 +1,8 @@
 package com.example
 
 import com.apurebase.kgraphql.GraphQL
+import com.example.schemas.postSchema
+import com.example.services.PostsService
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
@@ -30,11 +32,13 @@ fun Application.module() {
     }
 
     install(GraphQL) {
+
+        val postService = PostsService(client)
+
         playground = true
+
         schema {
-            query("hello") {
-                resolver { -> "World" }
-            }
+            postSchema(postService)
         }
     }
 }
