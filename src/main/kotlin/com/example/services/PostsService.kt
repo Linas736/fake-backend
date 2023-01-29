@@ -30,11 +30,7 @@ class PostsService(private val client: HttpClient) {
      * Returns a list of all [Post]s
      */
     suspend fun getAllPosts(): List<Post> {
-        return client.get(endpoint) {
-            url {
-                parameters.append("test", "test")
-            }
-        }.body()
+        return client.get(endpoint).body()
     }
 
     /**
@@ -47,11 +43,13 @@ class PostsService(private val client: HttpClient) {
     ): Post {
         val response: HttpResponse = client.post(endpoint) {
             contentType(ContentType.Application.Json)
-            setBody(Post(
-                userId = userId,
-                title = title,
-                body = body,
-                ))
+            setBody(
+                Post(
+                    userId = userId,
+                    title = title,
+                    body = body,
+                )
+            )
         }
         return Json.decodeFromString(response.body())
     }
@@ -67,11 +65,13 @@ class PostsService(private val client: HttpClient) {
     ): Post {
         val response: HttpResponse = client.put("$endpoint/$id") {
             contentType(ContentType.Application.Json)
-            setBody(Post(
-                userId = userId,
-                title = title,
-                body = body,
-            ))
+            setBody(
+                Post(
+                    userId = userId,
+                    title = title,
+                    body = body,
+                )
+            )
         }
         return response.body()
     }
