@@ -37,41 +37,24 @@ class PostsService(private val client: HttpClient) {
      * Creates a new [Post] and returns it
      */
     suspend fun createPost(
-        userId: Int,
-        title: String?,
-        body: String?
+        post: Post
     ): Post {
         val response: HttpResponse = client.post(endpoint) {
             contentType(ContentType.Application.Json)
-            setBody(
-                Post(
-                    userId = userId,
-                    title = title,
-                    body = body,
-                )
-            )
+            setBody(post)
         }
         return Json.decodeFromString(response.body())
     }
 
     /**
-     * Updates a [Post] with identifier [id] and returns it
+     * Updates a [Post] and returns it
      */
     suspend fun updatePost(
-        id: Int,
-        userId: Int?,
-        title: String?,
-        body: String?
+        post: Post
     ): Post {
-        val response: HttpResponse = client.put("$endpoint/$id") {
+        val response: HttpResponse = client.put("$endpoint/${post.id}") {
             contentType(ContentType.Application.Json)
-            setBody(
-                Post(
-                    userId = userId,
-                    title = title,
-                    body = body,
-                )
-            )
+            setBody(post)
         }
         return response.body()
     }

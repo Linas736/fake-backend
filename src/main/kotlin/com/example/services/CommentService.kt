@@ -37,45 +37,24 @@ class CommentService(private val client: HttpClient) {
      * Creates a new [Comment] and returns it
      */
     suspend fun createComment(
-        postId: Int,
-        name: String?,
-        email: String?,
-        body: String?,
+        comment: Comment
     ): Comment {
         val response: HttpResponse = client.post(endpoint) {
             contentType(ContentType.Application.Json)
-            setBody(
-                Comment(
-                    postId = postId,
-                    name = name,
-                    email = email,
-                    body = body,
-                )
-            )
+            setBody(comment)
         }
         return Json.decodeFromString(response.body())
     }
 
     /**
-     * Updates a [Comment] with identifier [id] and returns it
+     * Updates a [Comment] and returns it
      */
     suspend fun updateComment(
-        id: Int,
-        postId: Int,
-        name: String?,
-        email: String?,
-        body: String?,
+        comment: Comment
     ): Comment {
-        val response: HttpResponse = client.put("$endpoint/$id") {
+        val response: HttpResponse = client.put("$endpoint/${comment.id}") {
             contentType(ContentType.Application.Json)
-            setBody(
-                Comment(
-                    postId = postId,
-                    name = name,
-                    email = email,
-                    body = body,
-                )
-            )
+            setBody(comment)
         }
         return response.body()
     }

@@ -3,6 +3,7 @@ package com.example.schemas
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.example.models.Comment
 import com.example.services.CommentService
+import io.ktor.server.plugins.*
 
 /**
  * GraphQL schema for comments
@@ -28,27 +29,17 @@ fun SchemaBuilder.commentSchema(commentService: CommentService) {
     mutation("createComment") {
         description = "Create a new comment"
 
-        resolver {
-                postId: Int,
-                name: String?,
-                email: String?,
-                body: String?,
-            ->
-            commentService.createComment(postId = postId, name = name, email = email, body = body)
+        resolver { comment: Comment ->
+            commentService.createComment(comment)
         }
     }
 
     mutation("updateComment") {
         description = "Update an existing comment"
 
-        resolver {
-                id: Int,
-                postId: Int,
-                name: String?,
-                email: String?,
-                body: String?,
-            ->
-            commentService.updateComment(id = id, postId = postId, name = name, email = email, body = body)
+        resolver { comment: Comment ->
+            comment.id ?: throw BadRequestException("Comment id cannot be null")
+            commentService.updateComment(comment)
         }
     }
 

@@ -3,6 +3,7 @@ package com.example.schemas
 import com.apurebase.kgraphql.schema.dsl.SchemaBuilder
 import com.example.models.User
 import com.example.services.UserService
+import io.ktor.server.plugins.*
 
 /**
  * GraphQL schema for users
@@ -28,25 +29,19 @@ fun SchemaBuilder.userSchema(userService: UserService) {
     mutation("createUser") {
         description = "Create a new user"
 
-        resolver {
-                name: String?,
-                street: String?,
-                companyName: String?,
+        resolver { user: User
             ->
-            userService.createUser(name = name, street = street, companyName = companyName)
+            userService.createUser(user)
         }
     }
 
     mutation("updateUser") {
         description = "Update an existing user"
 
-        resolver {
-                id: Int,
-                name: String?,
-                street: String?,
-                companyName: String?,
+        resolver { user: User
             ->
-            userService.updateUser(id = id, name = name, street = street, companyName = companyName)
+            user.id ?: throw BadRequestException("User id cannot be null")
+            userService.updateUser(user)
         }
     }
 

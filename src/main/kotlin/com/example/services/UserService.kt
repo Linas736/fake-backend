@@ -1,7 +1,5 @@
 package com.example.services
 
-import com.example.models.Address
-import com.example.models.Company
 import com.example.models.User
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -39,41 +37,24 @@ class UserService(private val client: HttpClient) {
      * Creates a new [User] and returns it
      */
     suspend fun createUser(
-        name: String?,
-        street: String?,
-        companyName: String?,
+        user: User,
     ): User {
         val response: HttpResponse = client.post(endpoint) {
             contentType(ContentType.Application.Json)
-            setBody(
-                User(
-                    name = name,
-                    address = Address(street = street),
-                    company = Company(name = companyName)
-                )
-            )
+            setBody(user)
         }
         return Json.decodeFromString(response.body())
     }
 
     /**
-     * Updates a [User] with identifier [id] and returns it
+     * Updates a [User] and returns it
      */
     suspend fun updateUser(
-        id: Int,
-        name: String?,
-        street: String?,
-        companyName: String?,
+        user: User
     ): User {
-        val response: HttpResponse = client.put("$endpoint/$id") {
+        val response: HttpResponse = client.put("$endpoint/${user.id}") {
             contentType(ContentType.Application.Json)
-            setBody(
-                User(
-                    name = name,
-                    address = Address(street = street),
-                    company = Company(name = companyName)
-                )
-            )
+            setBody(user)
         }
         return response.body()
     }
