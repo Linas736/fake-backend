@@ -11,6 +11,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
@@ -24,6 +25,9 @@ fun main() {
 
 fun Application.module() {
     val client = HttpClient(CIO) {
+        this.install(Logging) {
+            level = LogLevel.INFO
+        }
         this.install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true
