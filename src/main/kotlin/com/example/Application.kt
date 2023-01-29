@@ -3,8 +3,10 @@ package com.example
 import com.apurebase.kgraphql.GraphQL
 import com.example.schemas.commentSchema
 import com.example.schemas.postSchema
+import com.example.schemas.userSchema
 import com.example.services.CommentService
 import com.example.services.PostsService
+import com.example.services.UserService
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
@@ -37,12 +39,14 @@ fun Application.module() {
 
         val postService = PostsService(client)
         val commentService = CommentService(client)
+        val userService = UserService(client)
 
         playground = true
 
         schema {
             postSchema(postService)
             commentSchema(commentService)
+            userSchema(userService)
         }
     }
 }

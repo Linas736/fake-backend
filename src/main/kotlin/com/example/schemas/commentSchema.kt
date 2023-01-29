@@ -5,7 +5,7 @@ import com.example.models.Comment
 import com.example.services.CommentService
 
 /**
- * GraphQL schema for posts
+ * GraphQL schema for comments
  */
 fun SchemaBuilder.commentSchema(commentService: CommentService) {
 
