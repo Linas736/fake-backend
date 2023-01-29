@@ -37,6 +37,7 @@ fun Application.module() {
         defaultRequest {
             url("https://jsonplaceholder.typicode.com/")
         }
+        expectSuccess = true
     }
 
     install(GraphQL) {
